@@ -2,20 +2,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-/*public class Boundary
+public class Boundary
 {
     public float xMin, xMax, zMin, zMax;
-}*/
+}
 
 public class FPSController : MonoBehaviour
 {
-    float speed = 20.0f;
-    //public Boundary boundary;
-   // private Rigidbody rb;
+    private Rigidbody rb;
+    public float speed = 20.0f;
+    public Boundary boundary;
+    public GameObject shot;
+    public Transform shotSpawn;
+    public float fireRate;
+    private float nextFire;
+
     // Use this for initialization
     void Start()
     {
-        //rb = GetComponent <Rigidbody>();
+       // rb = GetComponent <Rigidbody>();
     }
 
     void Yaw(float angle)
@@ -63,8 +68,15 @@ public class FPSController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         float mouseX, mouseY;
         float speed = this.speed;
+
+        if (Input.GetKey(KeyCode.G) && Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate;
+            Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+        }
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
@@ -109,12 +121,13 @@ public class FPSController : MonoBehaviour
         // If in Rift mode, dont pitch
         Pitch(-mouseY);
 
-
-       /* rb.position = new Vector3 (x,y,z)
+       /* rb.position = new Vector3
         (
-            Mathf.Clamp(rb.position.x, boundary.xMin, boundary.xMax),
-            0.0f,
-            Mathf.Clamp(rb.position.z, boundary.zMin, boundary.zMax)
-          );*/
+             Mathf.Clamp(rb.position.x, boundary.xMin, boundary.xMax),
+             0.0f,
+             Mathf.Clamp(rb.position.z, boundary.zMin, boundary.zMax)
+        );*/
+
+
     }
 }
